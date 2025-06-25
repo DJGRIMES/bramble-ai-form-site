@@ -89,42 +89,55 @@
   </div>
 
   <script>
-    const form = document.getElementById('aiForm');
-    const responseSection = document.getElementById('responseSection');
-    const aiResponse = document.getElementById('aiResponse');
+  const form = document.getElementById('aiForm');
+  const responseSection = document.getElementById('responseSection');
+  const aiResponse = document.getElementById('aiResponse');
 
-    form.addEventListener('submit', async (e) => {
-      e.preventDefault();
-      aiResponse.textContent = "Loading...";
-      responseSection.classList.remove('d-none');
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    aiResponse.textContent = "Loading...";
+    responseSection.classList.remove('d-none');
 
-      const progressMade = Array.from(document.querySelectorAll('input[type=checkbox]:checked'))
-        .map(cb => cb.value);
+    const progressMade = Array.from(document.querySelectorAll('input[type=checkbox]:checked'))
+      .map(cb => cb.value);
 
-      const formInput = {
-        businessName: document.getElementById('businessName').value,
-        description: document.getElementById('description').value,
-        currentChallenge: document.getElementById('currentChallenge').value,
-        stuckPoint: document.getElementById('stuckPoint').value,
-        progressMade,
-        nextGoal: document.getElementById('nextGoal').value,
-        progressFeelsLike: document.getElementById('progressFeelsLike').value,
-        additionalNotes: document.getElementById('additionalNotes').value
-      };
+    const formInput = {
+      businessName: document.getElementById('businessName').value,
+      description: document.getElementById('description').value,
+      currentChallenge: document.getElementById('currentChallenge').value,
+      stuckPoint: document.getElementById('stuckPoint').value,
+      progressMade,
+      nextGoal: document.getElementById('nextGoal').value,
+      progressFeelsLike: document.getElementById('progressFeelsLike').value,
+      additionalNotes: document.getElementById('additionalNotes').value
+    };
 
-      try {
-        const res = await fetch('https://bramble-ai-form.dustinjgrimes.workers.dev', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(formInput)
-        });
+    try {
+      const res = await fetch('https://bramble-ai-form.dustinjgrimes.workers.dev', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(formInput)
+      });
 
-        const data = await res.json();
-        aiResponse.textContent = data.result || "No response from AI.";
-      } catch (err) {
-        aiResponse.textContent = "Error: " + err.message;
+      const contentType = res.headers.get('content-type');
+      if (!res.ok) {
+        const errText = await res.text();
+        throw new Error(`Server error ${res.status}: ${errText}`);
       }
-    });
-  </script>
+
+      if (!contentType || !contentType.includes('application/json')) {
+        const fallbackText = await res.text();
+        throw new Error(`Expected JSON, but got: ${fallbackText}`);
+      }
+
+      const data = await res.json();
+      aiResponse.textContent = data.result || "No response from AI.";
+    } catch (err) {
+      aiResponse.textContent = "⚠️ Error: " + err.message;
+      console.error("AI request failed:", err);
+    }
+  });
+</script>
+
 </body>
 </html>
