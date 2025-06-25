@@ -1,5 +1,7 @@
-"preferredTools": {
-  "websites": ["Squarespace", “Custom Code”, “Wix”],
-  "environments": ["Google", "Zoho"],
-  "automation": ["Zapier", "n8n"],
+{
+  "preferredTools": {
+    "websites": ["Squarespace", "Custom Code", "Wix"],
+    "environments": ["Google", "Zoho"],
+    "automation": ["Zapier", "n8n"]
+  }
 }
