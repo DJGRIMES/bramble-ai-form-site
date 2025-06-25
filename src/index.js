@@ -37,7 +37,7 @@ export default {
       console.log("User prompt generated.", user);
 
       const promptPair = { system, user };
-      const finalOutput = await generateFinalResponse(promptPair, env);
+      const finalOutput = await generateFinalResponse(promptPair, env, context.meta.format);
       console.log("Final response generated.");
 
       return new Response(JSON.stringify({
@@ -71,12 +71,13 @@ async function fetchJSON(url) {
 }
 
 async function loadPromptContext() {
-  const [tone, values, tech, meta] = await Promise.all([
+  const [tone, values, tech, metaRaw] = await Promise.all([
     fetchJSON(GITHUB_BASE + "settings-tone.json"),
     fetchJSON(GITHUB_BASE + "settings-values.json"),
     fetchJSON(GITHUB_BASE + "settings-tech.json"),
     fetchJSON(GITHUB_BASE + "prompt-meta.json")
   ]);
+  const meta = { format: metaRaw.format };
   return { tone, values, tech, meta };
 }
 
@@ -88,7 +89,7 @@ async function generateSystemPrompt(context, env) {
     },
     {
       role: "user",
-      content: `Tone: ${JSON.stringify(context.tone)}\nValues: ${JSON.stringify(context.values)}\nPreferred Tools: ${JSON.stringify(context.tech)}`
+      content: `Tone: ${JSON.stringify(context.tone)}\nValues: ${JSON.stringify(context.values)}\nPreferred Tools: ${JSON.stringify(context.tech)}\nFormat Rules: ${JSON.stringify(context.meta.format)}`
     }
   ];
 
@@ -116,7 +117,7 @@ async function generateUserPrompt(formInput, context, env) {
     },
     {
       role: "user",
-      content: `Business Input: ${JSON.stringify(formInput, null, 2)}\nTone Guide: ${JSON.stringify(context.tone)}\nEmphasize clarity and approachability.`
+      content: `Business Input: ${JSON.stringify(formInput, null, 2)}\nTone Guide: ${JSON.stringify(context.tone)}\nFormat Rules: ${JSON.stringify(context.meta.format)}\nEmphasize clarity and approachability.`
     }
   ];
 
@@ -136,10 +137,11 @@ async function generateUserPrompt(formInput, context, env) {
   return result.choices?.[0]?.message?.content?.trim();
 }
 
-async function generateFinalResponse(promptPair, env) {
+async function generateFinalResponse(promptPair, env, formatRules) {
+  const formatAddition = formatRules ? `\nFormat Rules: ${JSON.stringify(formatRules)}` : "";
   const messages = [
-    { role: "system", content: promptPair.system },
-    { role: "user", content: promptPair.user }
+    { role: "system", content: promptPair.system + formatAddition },
+    { role: "user", content: promptPair.user + formatAddition }
   ];
 
   const response = await fetch("https://api.openai.com/v1/chat/completions", {
