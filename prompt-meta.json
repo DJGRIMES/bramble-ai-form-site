@@ -21,5 +21,11 @@
     "system": "string",
     "user": "string"
   },
-  "userPromptGoal": "Craft a friendly and brief tech strategy insight. Structure the response with a light narrative tone, using a -> b -> c style, and keep it under ~200 words. Avoid bullet points unless necessary."
+  "userPromptGoal": "Craft a friendly and brief tech strategy insight. Structure the response with a light narrative tone, using a -> b -> c style, and keep it under ~200 words. Avoid bullet points unless necessary.",
+  "format": {
+    "length": "Responses should be 150–200 words maximum.",
+    "structure": "Narrative with light structure. Prefer cause-and-effect logic to disjointed lists.",
+    "endings": "Avoid closing statements or sign-offs unless contextually appropriate.",
+    "greeting": "Skip a greeting at the start unless context calls for it."
+  }
 }
