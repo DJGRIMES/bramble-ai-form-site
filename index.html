@@ -88,7 +88,7 @@
     </div>
   </div>
 
-  <script>
+<script>
   const form = document.getElementById('aiForm');
   const responseSection = document.getElementById('responseSection');
   const aiResponse = document.getElementById('aiResponse');
@@ -119,18 +119,18 @@
         body: JSON.stringify(formInput)
       });
 
-      const contentType = res.headers.get('content-type');
-      if (!res.ok) {
-        const errText = await res.text();
-        throw new Error(`Server error ${res.status}: ${errText}`);
-      }
-
-      if (!contentType || !contentType.includes('application/json')) {
+      let data;
+      try {
+        data = await res.json();
+      } catch {
         const fallbackText = await res.text();
-        throw new Error(`Expected JSON, but got: ${fallbackText}`);
+        throw new Error(`Invalid JSON from server: ${fallbackText}`);
       }
 
-      const data = await res.json();
+      if (!res.ok) {
+        throw new Error(data?.error || `Server returned status ${res.status}`);
+      }
+
       aiResponse.textContent = data.result || "No response from AI.";
     } catch (err) {
       aiResponse.textContent = "⚠️ Error: " + err.message;
@@ -138,6 +138,7 @@
     }
   });
 </script>
+
 
 </body>
 </html>
