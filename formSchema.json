@@ -1,0 +1,86 @@
+{
+  "title": "Bramble AI Questionnaire",
+  "description": "Tell us a little about your business and where you’re feeling stuck. The more you share, the more helpful the plan can be.",
+  "sections": [
+    {
+      "id": "about",
+      "title": "🪴 About Your Business",
+      "fields": [
+        {
+          "id": "businessName",
+          "type": "text",
+          "label": "Business Name",
+          "placeholder": "Optional — What’s your business called?",
+          "required": false
+        },
+        {
+          "id": "description",
+          "type": "textarea",
+          "label": "What does your business do?",
+          "placeholder": "E.g., I run a food truck that does pop-ups and catering.",
+          "required": false
+        }
+      ]
+    },
+    {
+      "id": "friction",
+      "title": "🧭 Where You're At",
+      "fields": [
+        {
+          "id": "currentChallenge",
+          "type": "textarea",
+          "label": "What are you trying to figure out right now?",
+          "placeholder": "E.g., How do I set up a booking system without it getting complicated?",
+          "required": true
+        },
+        {
+          "id": "stuckPoint",
+          "type": "textarea",
+          "label": "What's been tripping you up?",
+          "placeholder": "E.g., I’ve tried Wix but got overwhelmed setting up email.",
+          "required": false
+        },
+        {
+          "id": "progressMade",
+          "type": "checkboxes",
+          "label": "Have you already started building anything?",
+          "options": ["Logo", "Website", "Email setup", "CRM or system", "Social media", "Nothing yet", "Other"],
+          "required": false
+        }
+      ]
+    },
+    {
+      "id": "goals",
+      "title": "🎯 Looking Ahead",
+      "fields": [
+        {
+          "id": "nextGoal",
+          "type": "textarea",
+          "label": "What are you hoping to accomplish next?",
+          "placeholder": "E.g., I want to launch a landing page and start collecting leads.",
+          "required": false
+        },
+        {
+          "id": "progressFeelsLike",
+          "type": "textarea",
+          "label": "What would make you feel like you're making progress?",
+          "placeholder": "E.g., Feeling more confident with my systems or getting my first customer.",
+          "required": false
+        }
+      ]
+    },
+    {
+      "id": "extra",
+      "title": "💬 Anything Else?",
+      "fields": [
+        {
+          "id": "additionalNotes",
+          "type": "textarea",
+          "label": "Anything else you want to share?",
+          "placeholder": "E.g., I’m not super tech-savvy but I learn quickly.",
+          "required": false
+        }
+      ]
+    }
+  ]
+}
