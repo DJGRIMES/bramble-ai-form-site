@@ -20,5 +20,6 @@
   "outputFormat": {
     "system": "string",
     "user": "string"
-  }
+  },
+  "userPromptGoal": "Craft a friendly and brief tech strategy insight. Structure the response with a light narrative tone, using a -> b -> c style, and keep it under ~200 words. Avoid bullet points unless necessary."
 }
