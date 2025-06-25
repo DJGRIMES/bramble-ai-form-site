@@ -8,28 +8,81 @@
 </head>
 <body class="bg-light p-4">
   <div class="container">
-    <h1 class="mb-4">Generate Your Tech Strategy</h1>
+    <h1 class="mb-4">🌿 Bramble Works — Tech Strategy Helper</h1>
+    <p class="mb-4">Answer a few questions to get a custom tech gameplan. No pressure, no jargon.</p>
+
     <form id="aiForm">
+      <!-- Section 1: About -->
       <div class="mb-3">
         <label for="businessName" class="form-label">Business Name</label>
-        <input type="text" class="form-control" id="businessName" required>
+        <input type="text" class="form-control" id="businessName" placeholder="Optional">
       </div>
       <div class="mb-3">
-        <label for="industry" class="form-label">Industry</label>
-        <input type="text" class="form-control" id="industry" required>
+        <label for="description" class="form-label">What does your business do?</label>
+        <textarea class="form-control" id="description" rows="2"></textarea>
+      </div>
+
+      <!-- Section 2: Where You're At -->
+      <div class="mb-3">
+        <label for="currentChallenge" class="form-label">What are you trying to figure out right now? <span class="text-danger">*</span></label>
+        <textarea class="form-control" id="currentChallenge" rows="3" required></textarea>
       </div>
       <div class="mb-3">
-        <label for="goals" class="form-label">Your Goals</label>
-        <textarea class="form-control" id="goals" rows="3" required></textarea>
+        <label for="stuckPoint" class="form-label">What's been tripping you up?</label>
+        <textarea class="form-control" id="stuckPoint" rows="2"></textarea>
       </div>
       <div class="mb-3">
-        <label for="location" class="form-label">Location</label>
-        <input type="text" class="form-control" id="location" required>
+        <label class="form-label">Have you already started building anything?</label>
+        <div class="form-check">
+          <input class="form-check-input" type="checkbox" value="Logo" id="logo">
+          <label class="form-check-label" for="logo">Logo</label>
+        </div>
+        <div class="form-check">
+          <input class="form-check-input" type="checkbox" value="Website" id="website">
+          <label class="form-check-label" for="website">Website</label>
+        </div>
+        <div class="form-check">
+          <input class="form-check-input" type="checkbox" value="Email setup" id="emailSetup">
+          <label class="form-check-label" for="emailSetup">Email setup</label>
+        </div>
+        <div class="form-check">
+          <input class="form-check-input" type="checkbox" value="CRM or system" id="crm">
+          <label class="form-check-label" for="crm">CRM or system</label>
+        </div>
+        <div class="form-check">
+          <input class="form-check-input" type="checkbox" value="Social media" id="socialMedia">
+          <label class="form-check-label" for="socialMedia">Social media</label>
+        </div>
+        <div class="form-check">
+          <input class="form-check-input" type="checkbox" value="Nothing yet" id="nothingYet">
+          <label class="form-check-label" for="nothingYet">Nothing yet</label>
+        </div>
+        <div class="form-check">
+          <input class="form-check-input" type="checkbox" value="Other" id="other">
+          <label class="form-check-label" for="other">Other</label>
+        </div>
       </div>
+
+      <!-- Section 3: Goals -->
+      <div class="mb-3">
+        <label for="nextGoal" class="form-label">What are you hoping to accomplish next?</label>
+        <textarea class="form-control" id="nextGoal" rows="2"></textarea>
+      </div>
+      <div class="mb-3">
+        <label for="progressFeelsLike" class="form-label">What would make you feel like you're making progress?</label>
+        <textarea class="form-control" id="progressFeelsLike" rows="2"></textarea>
+      </div>
+
+      <!-- Section 4: Freeform -->
+      <div class="mb-3">
+        <label for="additionalNotes" class="form-label">Anything else you want to share?</label>
+        <textarea class="form-control" id="additionalNotes" rows="2"></textarea>
+      </div>
+
       <button type="submit" class="btn btn-primary">Generate Plan</button>
     </form>
 
-    <div id="responseSection" class="mt-4 d-none">
+    <div id="responseSection" class="mt-5 d-none">
       <h2>Suggested Tech Plan</h2>
       <pre id="aiResponse" class="bg-white p-3 border rounded"></pre>
     </div>
@@ -45,18 +98,25 @@
       aiResponse.textContent = "Loading...";
       responseSection.classList.remove('d-none');
 
-      const payload = {
+      const progressMade = Array.from(document.querySelectorAll('input[type=checkbox]:checked'))
+        .map(cb => cb.value);
+
+      const formInput = {
         businessName: document.getElementById('businessName').value,
-        industry: document.getElementById('industry').value,
-        goals: document.getElementById('goals').value,
-        location: document.getElementById('location').value,
+        description: document.getElementById('description').value,
+        currentChallenge: document.getElementById('currentChallenge').value,
+        stuckPoint: document.getElementById('stuckPoint').value,
+        progressMade,
+        nextGoal: document.getElementById('nextGoal').value,
+        progressFeelsLike: document.getElementById('progressFeelsLike').value,
+        additionalNotes: document.getElementById('additionalNotes').value
       };
 
       try {
         const res = await fetch('https://bramble-ai-form.dustinjgrimes.workers.dev', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(payload)
+          body: JSON.stringify(formInput)
         });
 
         const data = await res.json();
