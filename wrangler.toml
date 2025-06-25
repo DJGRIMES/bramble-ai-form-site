@@ -1,0 +1,3 @@
+name = "bramble-ai-form"
+main = "src/index.js"
+compatibility_date = "2025-06-18"

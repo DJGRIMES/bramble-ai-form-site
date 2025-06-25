@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Bramble AI Form</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="bg-light p-4">
+  <div class="container">
+    <h1 class="mb-4">Generate Your Tech Strategy</h1>
+    <form id="aiForm">
+      <div class="mb-3">
+        <label for="businessName" class="form-label">Business Name</label>
+        <input type="text" class="form-control" id="businessName" required>
+      </div>
+      <div class="mb-3">
+        <label for="industry" class="form-label">Industry</label>
+        <input type="text" class="form-control" id="industry" required>
+      </div>
+      <div class="mb-3">
+        <label for="goals" class="form-label">Your Goals</label>
+        <textarea class="form-control" id="goals" rows="3" required></textarea>
+      </div>
+      <div class="mb-3">
+        <label for="location" class="form-label">Location</label>
+        <input type="text" class="form-control" id="location" required>
+      </div>
+      <button type="submit" class="btn btn-primary">Generate Plan</button>
+    </form>
+
+    <div id="responseSection" class="mt-4 d-none">
+      <h2>Suggested Tech Plan</h2>
+      <pre id="aiResponse" class="bg-white p-3 border rounded"></pre>
+    </div>
+  </div>
+
+  <script>
+    const form = document.getElementById('aiForm');
+    const responseSection = document.getElementById('responseSection');
+    const aiResponse = document.getElementById('aiResponse');
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      aiResponse.textContent = "Loading...";
+      responseSection.classList.remove('d-none');
+
+      const payload = {
+        businessName: document.getElementById('businessName').value,
+        industry: document.getElementById('industry').value,
+        goals: document.getElementById('goals').value,
+        location: document.getElementById('location').value,
+      };
+
+      try {
+        const res = await fetch('https://bramble-ai-form.dustinjgrimes.workers.dev', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+
+        const data = await res.json();
+        aiResponse.textContent = data.result || "No response from AI.";
+      } catch (err) {
+        aiResponse.textContent = "Error: " + err.message;
+      }
+    });
+  </script>
+</body>
+</html>
