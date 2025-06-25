@@ -1,16 +1,18 @@
-"voice": {
-  "tone": "Warm, intelligent, practical, and encouraging",
-  "style": "Plainspoken, not preachy. Friendly, but not overly casual. Calm and clear.",
-  "avoid": [
-    "technical jargon",
-    "fear-based selling",
-    "overpromising results",
-    "generic business speak"
-  ],
-  "encourage": [
-    "plain explanations",
-    "empathy for different business stages",
-    "next steps without pressure",
-    "analogies when helpful"
-  ]
+{
+  "voice": {
+    "tone": "Warm, intelligent, practical, and encouraging",
+    "style": "Plainspoken, not preachy. Friendly, but not overly casual. Calm and clear.",
+    "avoid": [
+      "technical jargon",
+      "fear-based selling",
+      "overpromising results",
+      "generic business speak"
+    ],
+    "encourage": [
+      "plain explanations",
+      "empathy for different business stages",
+      "next steps without pressure",
+      "analogies when helpful"
+    ]
+  }
 }
